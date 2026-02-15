@@ -178,28 +178,34 @@ export function History({ entries, onBack, onClear }: HistoryProps) {
 
               {/* Kuchařova hláška */}
               {selectedEntry.missingTags.length === 0 && selectedEntry.extraTags.length === 0 ? (
-                <div className="bg-green-50 rounded-xl p-6 border border-green-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-2xl">🏆</span>
-                    <h4 className="font-semibold text-green-800">Perfektní shoda!</h4>
+                <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                  <div className="flex gap-3">
+                    <img src="/kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
+                    <div>
+                      <h4 className="font-semibold text-green-800 flex items-center gap-2 mb-2">
+                        🏆 Perfektní shoda!
+                      </h4>
+                      <p className="text-green-700 italic text-sm">Kuchař odvedl přesně to, co jsi chtěl/a!</p>
+                    </div>
                   </div>
-                  <p className="text-green-700 italic">Kuchař odvedl přesně to, co jsi chtěl/a!</p>
                 </div>
               ) : selectedEntry.hlaska && (
-                <div className="bg-amber-50 rounded-xl p-6 border border-amber-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-2xl">👨‍🍳</span>
-                    <h4 className="font-semibold text-amber-800">Kuchařovo doznání</h4>
-                  </div>
-                  {selectedEntry.missingTags.length > 0 && (
-                    <div className="mb-3">
-                      <span className="text-xs text-red-600">Chybějící ingredience: </span>
-                      {selectedEntry.missingTags.map(tag => (
-                        <span key={tag} className="text-xs text-red-700 font-medium">#{tag} </span>
-                      ))}
+                <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+                  <div className="flex gap-3">
+                    <img src="/kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-amber-800 mb-2">Kuchařovo doznání</h4>
+                      {selectedEntry.extraTags.length > 0 && (
+                        <div className="mb-2">
+                          <span className="text-xs text-red-600">Chybějící ingredience: </span>
+                          {selectedEntry.extraTags.map(tag => (
+                            <span key={tag} className="text-xs text-red-700 font-medium">#{tag} </span>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-amber-700 italic text-sm">"{selectedEntry.hlaska}"</p>
                     </div>
-                  )}
-                  <p className="text-amber-700 italic">"{selectedEntry.hlaska}"</p>
+                  </div>
                 </div>
               )}
             </div>

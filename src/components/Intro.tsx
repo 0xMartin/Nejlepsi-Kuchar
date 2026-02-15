@@ -63,7 +63,7 @@ export function Intro({ onStart, onHistory }: IntroProps) {
           <motion.img 
             src="/kuchar.png"
             alt="Kuchař"
-            className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto"
+            className="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 mx-auto"
             animate={{ 
               rotate: [0, -5, 5, 0],
               scale: [1, 1.05, 1]

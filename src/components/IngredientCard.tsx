@@ -30,7 +30,11 @@ function getEmoji(tag: string): string {
     'okurka': '🥒',
     'citron': '🍋',
     'chilli': '🌶️',
-    'cesnek': '🧄'
+    'cesnek': '🧄',
+    'postolka': '🦅',
+    'kocka': '🐱',
+    'sysel': '🐿️',
+    'hranolky': '🍟'
   };
   return emojiMap[tag] || '🍽️';
 }

@@ -39,30 +39,36 @@ export function ChefConfession({ missingTags, extraTags, hlapisky, userTagsCount
         transition={{ type: 'spring', stiffness: 300 }}
       >
         {/* Hlavička */}
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-start gap-4 mb-4">
+          <h3 className="text-lg font-bold text-amber-800">
+            Kuchařovo doznání
+          </h3>
+        </div>
+
+        {/* Obsah s kucharem vlevo */}
+        <div className="flex gap-4">
+          {/* Kuchař vlevo */}
           <motion.div
+            className="flex-shrink-0"
             animate={{ 
-              rotate: [-5, 5, -5],
-              y: [0, -3, 0]
+              rotate: [-3, 3, -3],
+              y: [0, -4, 0]
             }}
             transition={{ 
-              duration: 2, 
+              duration: 2.5, 
               repeat: Infinity,
               repeatType: 'reverse' 
             }}
-            className="text-4xl"
           >
-            👨‍🍳
+            <img 
+              src="/kuchar.png" 
+              alt="Kuchař" 
+              className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
+            />
           </motion.div>
-          <div>
-            <h3 className="text-lg font-bold text-amber-800">
-              Kuchařovo doznání
-            </h3>
-            <p className="text-xs text-amber-600">
-              Malé vysvětlení od mistra kuchyně
-            </p>
-          </div>
-        </div>
+
+          {/* Obsah vpravo */}
+          <div className="flex-1 min-w-0">
 
         {/* Hláška pro vybíravého uživatele */}
         {isPicky && (
@@ -113,15 +119,17 @@ export function ChefConfession({ missingTags, extraTags, hlapisky, userTagsCount
           </div>
         )}
 
-        {/* Povzbudivá zpráva */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2 }}
-          className="text-center text-amber-700 mt-3 font-medium text-sm"
-        >
-          Ale neboj, chuťově to bude 💯!
-        </motion.p>
+            {/* Povzbudivá zpráva */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 2 }}
+              className="text-amber-700 mt-3 font-medium text-sm"
+            >
+              Ale neboj, chuťově to bude 💯!
+            </motion.p>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -146,52 +154,63 @@ export function PerfectMatch({ joke }: PerfectMatchProps) {
         transition={{ type: 'spring', stiffness: 300 }}
       >
         {/* Hlavička */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="mb-3">
+          <h3 className="text-lg font-bold text-green-800">
+            🏆 Mistr kuchař je spokojený!
+          </h3>
+        </div>
+
+        {/* Obsah s kuchařem vlevo */}
+        <div className="flex gap-4">
+          {/* Kuchař vlevo */}
           <motion.div
+            className="flex-shrink-0"
             animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, 10, -10, 0]
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0]
             }}
             transition={{ 
               duration: 1.5, 
               repeat: Infinity,
               repeatType: 'reverse' 
             }}
-            className="text-4xl"
           >
-            👨‍🍳
+            <img 
+              src="/kuchar.png" 
+              alt="Kuchař" 
+              className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
+            />
           </motion.div>
-          <div>
-            <h3 className="text-lg font-bold text-green-800">
-              🏆 Mistr kuchař je spokojený!
-            </h3>
-            <p className="text-xs text-green-600">
+
+          {/* Obsah vpravo */}
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-green-600 mb-2">
               Perfektní shoda všech ingrediencí
             </p>
+
+            {/* Vtipná hláška o perfektní práci */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3 }}
+              className="bg-white/70 rounded-xl p-3 shadow-inner"
+            >
+              <p className="text-gray-700 italic text-sm leading-relaxed">
+                "{joke}"
+              </p>
+            </motion.div>
+
+            {/* Celebrace */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+              className="mt-3"
+            >
+              <span className="text-3xl">🎉✨🌟</span>
+            </motion.div>
           </div>
         </div>
-
-        {/* Vtipná hláška o perfektní práci */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.3 }}
-          className="bg-white/70 rounded-xl p-3 shadow-inner"
-        >
-          <p className="text-gray-700 italic text-base leading-relaxed text-center">
-            "{joke}"
-          </p>
-        </motion.div>
-
-        {/* Celebrace */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="text-center mt-3"
-        >
-          <span className="text-4xl">🎉✨🌟</span>
-        </motion.div>
       </motion.div>
     </motion.div>
   );
