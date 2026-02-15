@@ -60,8 +60,10 @@ export function Intro({ onStart, onHistory }: IntroProps) {
           }}
           className="mb-4 sm:mb-6"
         >
-          <motion.span 
-            className="text-6xl sm:text-7xl md:text-8xl block"
+          <motion.img 
+            src="/kuchar.png"
+            alt="Kuchař"
+            className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto"
             animate={{ 
               rotate: [0, -5, 5, 0],
               scale: [1, 1.05, 1]
@@ -71,9 +73,7 @@ export function Intro({ onStart, onHistory }: IntroProps) {
               repeat: Infinity,
               repeatType: 'reverse' 
             }}
-          >
-            👨‍🍳
-          </motion.span>
+          />
         </motion.div>
 
         {/* Název */}
