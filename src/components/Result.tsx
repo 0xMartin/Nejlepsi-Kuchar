@@ -236,7 +236,6 @@ export function Result({ result, userTags, hlasky, onClose }: ResultProps) {
         <PerfectMatch joke={perfectJoke} />
       ) : (
         <ChefConfession
-          missingTags={missingTags}
           extraTags={extraTags}
           hlapisky={hlaskyProIngredienc}
           userTagsCount={userTags.length}

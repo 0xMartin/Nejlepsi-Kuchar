@@ -11,13 +11,12 @@ const PICKY_MESSAGES = [
 ];
 
 interface ChefConfessionProps {
-  missingTags: string[];
   extraTags: string[];
   hlapisky: { tag: string; hlaska: string }[];
   userTagsCount?: number;
 }
 
-export function ChefConfession({ missingTags, extraTags, hlapisky, userTagsCount = 3 }: ChefConfessionProps) {
+export function ChefConfession({ extraTags, hlapisky, userTagsCount = 3 }: ChefConfessionProps) {
   const isPicky = userTagsCount < 3;
   
   const pickyMessage = useMemo(() => {
