@@ -43,34 +43,34 @@ export function Result({ result, userTags, hlasky, onClose }: ResultProps) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-4 relative">
-      {/* Konfety animace pro úspěch */}
+      {/* Konfety animace pro úspěch - omezený počet a trvání */}
       {isPerfectMatch && (
         <motion.div
           className="fixed inset-0 pointer-events-none overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          {[...Array(30)].map((_, i) => (
+          {[...Array(12)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute text-3xl"
+              className="absolute text-2xl sm:text-3xl"
               initial={{
                 top: '-10%',
-                left: `${Math.random() * 100}%`,
+                left: `${(i * 8) + 4}%`,
                 rotate: 0
               }}
               animate={{
                 top: '110%',
-                rotate: 360 * (Math.random() > 0.5 ? 1 : -1)
+                rotate: 360 * (i % 2 === 0 ? 1 : -1)
               }}
               transition={{
-                duration: 3 + Math.random() * 2,
-                delay: Math.random() * 2,
-                repeat: Infinity,
-                repeatDelay: Math.random() * 3
+                duration: 4,
+                delay: i * 0.3,
+                repeat: 2,
+                repeatDelay: 1
               }}
             >
-              {['🎉', '✨', '🌟', '🎊', '💫', '🏆', '👏'][Math.floor(Math.random() * 7)]}
+              {['🎉', '✨', '🌟', '🎊', '💫', '🏆'][i % 6]}
             </motion.div>
           ))}
         </motion.div>

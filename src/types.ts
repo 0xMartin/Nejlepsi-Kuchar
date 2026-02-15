@@ -40,5 +40,6 @@ export interface HistoryEntry {
   matchedTags: string[];
   missingTags: string[];
   extraTags: string[];
-  hlaska: string;
+  hlasky: { tag: string; hlaska: string }[]; // Hlášky pro každý extra tag
+  hlaska?: string; // Fallback pro staré záznamy
 }

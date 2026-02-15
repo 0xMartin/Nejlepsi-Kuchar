@@ -189,21 +189,34 @@ export function History({ entries, onBack, onClear }: HistoryProps) {
                     </div>
                   </div>
                 </div>
-              ) : selectedEntry.hlaska && (
+              ) : (selectedEntry.hlasky?.length > 0 || selectedEntry.hlaska) && (
                 <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
                   <div className="flex gap-3">
                     <img src="./kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-amber-800 mb-2">Kuchařovo doznání</h4>
-                      {selectedEntry.extraTags.length > 0 && (
-                        <div className="mb-2">
-                          <span className="text-xs text-red-600">Chybějící ingredience: </span>
-                          {selectedEntry.extraTags.map(tag => (
-                            <span key={tag} className="text-xs text-red-700 font-medium">#{tag} </span>
+                      <h4 className="font-semibold text-amber-800 mb-3">Kuchařovo doznání</h4>
+                      {selectedEntry.hlasky?.length > 0 ? (
+                        <div className="space-y-2">
+                          {selectedEntry.hlasky.map((h, idx) => (
+                            <div key={idx} className="bg-amber-100/50 rounded-lg p-2">
+                              <span className="text-xs text-red-600 font-medium">#{h.tag}: </span>
+                              <span className="text-amber-700 italic text-sm">"{h.hlaska}"</span>
+                            </div>
                           ))}
                         </div>
+                      ) : selectedEntry.hlaska && (
+                        <div>
+                          {selectedEntry.extraTags.length > 0 && (
+                            <div className="mb-2">
+                              <span className="text-xs text-red-600">Chybějící ingredience: </span>
+                              {selectedEntry.extraTags.map(tag => (
+                                <span key={tag} className="text-xs text-red-700 font-medium">#{tag} </span>
+                              ))}
+                            </div>
+                          )}
+                          <p className="text-amber-700 italic text-sm">"{selectedEntry.hlaska}"</p>
+                        </div>
                       )}
-                      <p className="text-amber-700 italic text-sm">"{selectedEntry.hlaska}"</p>
                     </div>
                   </div>
                 </div>

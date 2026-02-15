@@ -74,7 +74,13 @@ function App() {
   }, []);
 
   // Uložení do historie
-  const saveToHistory = (matchResult: MatchResult, tags: string[], hlaska: string) => {
+  const saveToHistory = (matchResult: MatchResult, tags: string[]) => {
+    // Generovat hlášky pro každou extra ingredienci (co uživatel chtěl, ale v jídle není)
+    const hlaskyProIngredienc = matchResult.extraTags.map(tag => ({
+      tag,
+      hlaska: getRandomHlaska(hlasky)
+    }));
+    
     const entry: HistoryEntry = {
       id: Date.now().toString(),
       timestamp: Date.now(),
@@ -83,7 +89,8 @@ function App() {
       matchedTags: matchResult.matchedTags,
       missingTags: matchResult.missingTags,
       extraTags: matchResult.extraTags,
-      hlaska
+      hlasky: hlaskyProIngredienc,
+      hlaska: hlaskyProIngredienc[0]?.hlaska || '' // Fallback pro zpětnou kompatibilitu
     };
 
     const newHistory = [entry, ...history].slice(0, 50); // Max 50 záznamů
@@ -121,8 +128,7 @@ function App() {
     setResult(matchResult);
     
     // Uložit do historie
-    const hlaska = getRandomHlaska(hlasky);
-    saveToHistory(matchResult, tags, hlaska);
+    saveToHistory(matchResult, tags);
     
     setAppState('result');
   };
