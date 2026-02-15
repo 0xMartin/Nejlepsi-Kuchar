@@ -61,7 +61,7 @@ export function Intro({ onStart, onHistory }: IntroProps) {
           className="mb-4 sm:mb-6"
         >
           <motion.img 
-            src="/kuchar.png"
+            src="./kuchar.png"
             alt="Kuchař"
             className="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 mx-auto"
             animate={{ 

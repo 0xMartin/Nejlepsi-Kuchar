@@ -60,7 +60,7 @@ export function ChefConfession({ extraTags, hlapisky, userTagsCount = 3 }: ChefC
             }}
           >
             <img 
-              src="/kuchar.png" 
+              src="./kuchar.png" 
               alt="Kuchař" 
               className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
             />
@@ -175,7 +175,7 @@ export function PerfectMatch({ joke }: PerfectMatchProps) {
             }}
           >
             <img 
-              src="/kuchar.png" 
+              src="./kuchar.png" 
               alt="Kuchař" 
               className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
             />

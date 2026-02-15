@@ -180,7 +180,7 @@ export function History({ entries, onBack, onClear }: HistoryProps) {
               {selectedEntry.missingTags.length === 0 && selectedEntry.extraTags.length === 0 ? (
                 <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                   <div className="flex gap-3">
-                    <img src="/kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
+                    <img src="./kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-green-800 flex items-center gap-2 mb-2">
                         🏆 Perfektní shoda!
@@ -192,7 +192,7 @@ export function History({ entries, onBack, onClear }: HistoryProps) {
               ) : selectedEntry.hlaska && (
                 <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
                   <div className="flex gap-3">
-                    <img src="/kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
+                    <img src="./kuchar.png" alt="Kuchař" className="w-16 h-16 object-contain flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-amber-800 mb-2">Kuchařovo doznání</h4>
                       {selectedEntry.extraTags.length > 0 && (
