@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { MatchResult, Hlaska } from '../types';
-import { getJidloImagePath, getRandomHlaska } from '../utils';
+import { MatchResult } from '../types';
+import { getJidloImagePath } from '../utils';
 import { ChefConfession, PerfectMatch } from './ChefConfession';
 import { useMemo, useState } from 'react';
 
@@ -19,22 +19,14 @@ const PERFECT_MATCH_JOKES = [
 interface ResultProps {
   result: MatchResult;
   userTags: string[];
-  hlasky: Hlaska[];
+  generatedHlasky: { tag: string; hlaska: string }[];
   onClose: () => void;
 }
 
-export function Result({ result, userTags, hlasky, onClose }: ResultProps) {
+export function Result({ result, userTags, generatedHlasky, onClose }: ResultProps) {
   const { jidlo, matchedTags, missingTags, extraTags } = result;
   const isPerfectMatch = missingTags.length === 0 && extraTags.length === 0;
   const [isFullscreen, setIsFullscreen] = useState(false);
-  
-  // Generujeme hlášky pro každou ingredienci, kterou uživatel chtěl, ale v jídle není (extraTags)
-  const hlaskyProIngredienc = useMemo(() => {
-    return extraTags.map(tag => ({
-      tag,
-      hlaska: getRandomHlaska(hlasky)
-    }));
-  }, [extraTags, hlasky]);
 
   // Vtip pro perfektní shodu
   const perfectJoke = useMemo(() => {
@@ -237,7 +229,7 @@ export function Result({ result, userTags, hlasky, onClose }: ResultProps) {
       ) : (
         <ChefConfession
           extraTags={extraTags}
-          hlapisky={hlaskyProIngredienc}
+          hlapisky={generatedHlasky}
           userTagsCount={userTags.length}
         />
       )}

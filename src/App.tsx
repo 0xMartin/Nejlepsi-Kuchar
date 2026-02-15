@@ -20,6 +20,7 @@ function App() {
   const [pickyHlasky, setPickyHlasky] = useState<Hlaska[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [result, setResult] = useState<MatchResult | null>(null);
+  const [generatedHlasky, setGeneratedHlasky] = useState<{ tag: string; hlaska: string }[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,13 +75,7 @@ function App() {
   }, []);
 
   // Uložení do historie
-  const saveToHistory = (matchResult: MatchResult, tags: string[]) => {
-    // Generovat hlášky pro každou extra ingredienci (co uživatel chtěl, ale v jídle není)
-    const hlaskyProIngredienc = matchResult.extraTags.map(tag => ({
-      tag,
-      hlaska: getRandomHlaska(hlasky)
-    }));
-    
+  const saveToHistory = (matchResult: MatchResult, tags: string[], hlaskyProIngredienc: { tag: string; hlaska: string }[]) => {
     const entry: HistoryEntry = {
       id: Date.now().toString(),
       timestamp: Date.now(),
@@ -127,8 +122,15 @@ function App() {
     const matchResult = findBestMatch(tags, jidla);
     setResult(matchResult);
     
-    // Uložit do historie
-    saveToHistory(matchResult, tags);
+    // Vygenerovat hlášky JEDNOU a použít pro zobrazení i historii
+    const hlaskyProIngredienc = matchResult.extraTags.map(tag => ({
+      tag,
+      hlaska: getRandomHlaska(hlasky)
+    }));
+    setGeneratedHlasky(hlaskyProIngredienc);
+    
+    // Uložit do historie se stejnými hláškami
+    saveToHistory(matchResult, tags, hlaskyProIngredienc);
     
     setAppState('result');
   };
@@ -244,7 +246,7 @@ function App() {
           <Result
             result={result}
             userTags={selectedTags}
-            hlasky={hlasky}
+            generatedHlasky={generatedHlasky}
             onClose={handleClose}
           />
         </motion.div>
