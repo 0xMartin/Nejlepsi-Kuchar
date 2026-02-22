@@ -59,8 +59,8 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
   // Pro serious mód - vícenásobný výběr
   const [seriousSelection, setSeriousSelection] = useState<Set<number>>(new Set());
 
-  const MAX_TAGS = 5;
   const isSerious = gameMode === 'serious';
+  const MAX_TAGS = 3;
 
   // Vyber ingredience podle módu
   const currentIngredients = useMemo(() => {
