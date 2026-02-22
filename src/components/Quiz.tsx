@@ -21,6 +21,23 @@ const SERIOUS_EMOJI_MAP: Record<string, string> = {
   cesnek: '🧄',
   syr: '🧀',
   vejce: '🥚',
+  krevety: '🦐',
+  tunak: '🐟',
+  jehneci: '🐑',
+  kachna: '🦆',
+  rajcata: '🍅',
+  spenat: '🥬',
+  cuketa: '🥒',
+  houby: '🍄',
+  cocka: '🫘',
+  cizrna: '🫛',
+  brambory: '🥔',
+  mozzarella: '🧀',
+  feta: '🧀',
+  kokos: '🥥',
+  chilli: '🌶️',
+  fazole: '🫘',
+  cibule: '🧅',
 };
 
 const getSeriousEmoji = (tag: string): string => {
@@ -42,7 +59,7 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
   // Pro serious mód - vícenásobný výběr
   const [seriousSelection, setSeriousSelection] = useState<Set<number>>(new Set());
 
-  const REQUIRED_TAGS = 3;
+  const MAX_TAGS = 5;
   const isSerious = gameMode === 'serious';
 
   // Vyber ingredience podle módu
@@ -61,8 +78,8 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
     }
   }, [ingredience, usedIngredientIds, questionKey, isSerious]);
 
-  const progress = (selectedTags.length / REQUIRED_TAGS) * 100;
-  const remainingSlots = REQUIRED_TAGS - selectedTags.length;
+  const progress = (selectedTags.length / MAX_TAGS) * 100;
+  const remainingSlots = MAX_TAGS - selectedTags.length;
 
   // Pro serious mód - toggle výběru ingredience
   const handleSeriousToggle = (ing: Ingredience) => {
@@ -71,7 +88,7 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
       newSelection.delete(ing.id);
     } else {
       // Zkontroluj, jestli můžeme přidat další
-      if (selectedTags.length + newSelection.size < REQUIRED_TAGS) {
+      if (selectedTags.length + newSelection.size < MAX_TAGS) {
         newSelection.add(ing.id);
       }
     }
@@ -99,8 +116,8 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
     // Reset výběru pro další kolo
     setSeriousSelection(new Set());
     
-    // Zkontrolujeme jestli máme dost tagů
-    if (allTags.length >= REQUIRED_TAGS) {
+    // Zkontrolujeme jestli máme dost tagů nebo chce uživatel ukončit
+    if (allTags.length >= MAX_TAGS) {
       onComplete(allTags);
     } else {
       // Zkontrolujeme dostupné ingredience
@@ -109,14 +126,25 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
         ing => !usedIngredientIds.has(ing.id) && !currentIds.includes(ing.id)
       ).length;
       
-      if (remainingCount < 1 && allTags.length === 0) {
-        onPickyEater?.();
-      } else if (remainingCount < 1 && allTags.length > 0) {
+      if (remainingCount < 1) {
+        // Už nejsou další ingredience - dokončíme s tím co máme
         onComplete(allTags);
       } else {
         setQuestionKey(prev => prev + 1);
       }
     }
+  };
+  
+  // Pro serious mód - předčasné ukončení
+  const handleSeriousFinish = () => {
+    const newSelectedTags = currentIngredients
+      ? currentIngredients
+          .filter(ing => seriousSelection.has(ing.id))
+          .map(ing => ing.tag)
+      : [];
+    
+    const allTags = [...selectedTags, ...newSelectedTags];
+    onComplete(allTags);
   };
 
   // Pro experimental mód - výběr jedné ingredience
@@ -141,7 +169,7 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
       }
       
       // Zkontrolujeme jestli máme dost tagů
-      if (newTags.length >= REQUIRED_TAGS) {
+      if (newTags.length >= MAX_TAGS) {
         onComplete(newTags);
       } else {
         const currentIds = currentIngredients 
@@ -191,10 +219,10 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
       <div className="w-full max-w-2xl mb-4 sm:mb-6">
         <div className="flex justify-between items-center mb-2 sm:mb-3">
           <span className={`font-semibold text-sm sm:text-base ${isSerious ? 'text-blue-600' : 'text-pink-600'}`}>
-            Vybráno {selectedTags.length} z {REQUIRED_TAGS} ingrediencí
+            Vybráno {selectedTags.length} z {MAX_TAGS} ingrediencí
           </span>
           <span className="text-gray-500 text-xs sm:text-sm">
-            {REQUIRED_TAGS - selectedTags.length} zbývá
+            {MAX_TAGS - selectedTags.length} zbývá
           </span>
         </div>
         <div className="h-2 sm:h-3 bg-white/50 rounded-full overflow-hidden shadow-inner">
@@ -245,7 +273,7 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
                     ? 'bg-blue-100 border-2 border-blue-500 shadow-lg' 
                     : 'bg-white/90 border-2 border-transparent shadow-md hover:shadow-lg'
                   }
-                  ${selectedTags.length + seriousSelection.size >= REQUIRED_TAGS && !seriousSelection.has(ing.id)
+                  ${selectedTags.length + seriousSelection.size >= MAX_TAGS && !seriousSelection.has(ing.id)
                     ? 'opacity-50 cursor-not-allowed'
                     : ''
                   }
@@ -304,23 +332,43 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
 
       {/* Tlačítka akce */}
       {isSerious ? (
-        // SERIOUS MÓD - tlačítko Pokračovat
-        <motion.button
+        // SERIOUS MÓD - tlačítka Pokračovat a Dokončit
+        <motion.div 
+          className="flex flex-col sm:flex-row gap-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleSeriousContinue}
-          className="px-6 py-3 sm:px-10 sm:py-4 rounded-full font-semibold text-sm sm:text-lg
-            bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg
-            hover:shadow-xl transition-all cursor-pointer"
         >
-          {seriousSelection.size > 0 
-            ? `Potvrdit výběr (${seriousSelection.size})` 
-            : 'Přeskočit'
-          }
-        </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleSeriousContinue}
+            className="px-6 py-3 sm:px-10 sm:py-4 rounded-full font-semibold text-sm sm:text-lg
+              bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg
+              hover:shadow-xl transition-all cursor-pointer"
+          >
+            {seriousSelection.size > 0 
+              ? `Potvrdit výběr (${seriousSelection.size})` 
+              : 'Přeskočit'
+            }
+          </motion.button>
+          
+          {/* Tlačítko pro předčasné dokončení */}
+          {(selectedTags.length > 0 || seriousSelection.size > 0) && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleSeriousFinish}
+              className="px-6 py-3 sm:px-8 sm:py-4 rounded-full font-semibold text-sm sm:text-lg
+                bg-white/80 text-blue-600 border-2 border-blue-200 shadow-md
+                hover:bg-white hover:border-blue-400 transition-all cursor-pointer"
+            >
+              ✓ Hledat recept ({selectedTags.length + seriousSelection.size})
+            </motion.button>
+          )}
+        </motion.div>
       ) : (
         // EXPERIMENTAL MÓD - tlačítko Ani jedno
         <motion.button

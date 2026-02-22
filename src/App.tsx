@@ -5,7 +5,7 @@ import {
   parseIngredience, 
   parseJidla, 
   parseHlasky,
-  findBestMatch,
+  findAllBestMatches,
   getRandomHlaska
 } from './utils';
 import { AppState, Ingredience, Jidlo, Hlaska, MatchResult, HistoryEntry, GameMode } from './types';
@@ -25,6 +25,8 @@ function App() {
   const [pickyHlasky, setPickyHlasky] = useState<Hlaska[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [result, setResult] = useState<MatchResult | null>(null);
+  const [allMatches, setAllMatches] = useState<MatchResult[]>([]);
+  const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
   const [generatedHlasky, setGeneratedHlasky] = useState<{ tag: string; hlaska: string }[]>([]);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -133,27 +135,55 @@ function App() {
   // Dokončení kvízu
   const handleQuizComplete = (tags: string[]) => {
     setSelectedTags(tags);
-    const matchResult = findBestMatch(tags, jidla);
+    const matches = findAllBestMatches(tags, jidla);
+    setAllMatches(matches);
+    setCurrentMatchIndex(0);
+    
+    const matchResult = matches[0];
     setResult(matchResult);
     
-    // Vygenerovat hlášky JEDNOU a použít pro zobrazení i historii
+    // Vygenerovat hlášky JEDNOU a použít pro zobrazení
     const hlaskyProIngredienc = matchResult.extraTags.map(tag => ({
       tag,
       hlaska: getRandomHlaska(hlasky)
     }));
     setGeneratedHlasky(hlaskyProIngredienc);
     
-    // Uložit do historie se stejnými hláškami
-    saveToHistory(matchResult, tags, hlaskyProIngredienc);
+    // Neukládáme do historie hned - uložíme až při zavření
     
     setAppState('result');
   };
 
+  // Přepnutí na další podobné jídlo
+  const handleNextMatch = () => {
+    if (allMatches.length <= 1) return;
+    
+    const nextIndex = (currentMatchIndex + 1) % allMatches.length;
+    setCurrentMatchIndex(nextIndex);
+    
+    const nextMatch = allMatches[nextIndex];
+    setResult(nextMatch);
+    
+    // Vygenerovat nové hlášky pro nové extra tagy
+    const hlaskyProIngredienc = nextMatch.extraTags.map(tag => ({
+      tag,
+      hlaska: getRandomHlaska(hlasky)
+    }));
+    setGeneratedHlasky(hlaskyProIngredienc);
+  };
+
   // Zavření výsledku
   const handleClose = () => {
+    // Uložit do historie pouze aktuálně zobrazené jídlo
+    if (result) {
+      saveToHistory(result, selectedTags, generatedHlasky);
+    }
+    
     setAppState('intro');
     setSelectedTags([]);
     setResult(null);
+    setAllMatches([]);
+    setCurrentMatchIndex(0);
   };
 
   // Zpět z historie
@@ -269,6 +299,9 @@ function App() {
             generatedHlasky={generatedHlasky}
             onClose={handleClose}
             gameMode={gameMode}
+            totalMatches={allMatches.length}
+            currentMatchIndex={currentMatchIndex}
+            onNextMatch={handleNextMatch}
           />
         </motion.div>
       )}

@@ -30,9 +30,12 @@ interface ResultProps {
   generatedHlasky: { tag: string; hlaska: string }[];
   onClose: () => void;
   gameMode: GameMode;
+  totalMatches: number;
+  currentMatchIndex: number;
+  onNextMatch: () => void;
 }
 
-export function Result({ result, userTags, generatedHlasky, onClose, gameMode }: ResultProps) {
+export function Result({ result, userTags, generatedHlasky, onClose, gameMode, totalMatches, currentMatchIndex, onNextMatch }: ResultProps) {
   const { jidlo, matchedTags, missingTags, extraTags } = result;
   const isPerfectMatch = missingTags.length === 0 && extraTags.length === 0;
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -269,6 +272,29 @@ export function Result({ result, userTags, generatedHlasky, onClose, gameMode }:
           userTagsCount={userTags.length}
           gameMode={gameMode}
         />
+      )}
+
+      {/* Tlačítko pro zobrazení jiného podobného jídla */}
+      {totalMatches > 1 && (
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1 }}
+          className="mt-4 text-center"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onNextMatch}
+            className={`px-5 py-2.5 sm:px-6 sm:py-3 text-sm sm:text-base font-semibold rounded-full shadow-md hover:shadow-lg transition-shadow ${
+              isSerious 
+                ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' 
+                : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+            }`}
+          >
+            🔄 Jiné podobné jídlo ({currentMatchIndex + 1}/{totalMatches})
+          </motion.button>
+        </motion.div>
       )}
 
       {/* Tlačítko pro zavření */}

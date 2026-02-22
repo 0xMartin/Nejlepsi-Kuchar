@@ -11,3 +11,72 @@ id;nazev;tagy;obrazek;popis
 10;Losos teriyaki s rýží;losos|ryze|sojova;salmon_teriyaki.png;Japonská inspirace - glazovaný losos se sezamem a rýží.
 11;Vepřové s brokolicí;veprove|brokolice|cesnek;pork_broccoli.png;Zdravá kombinace - šťavnaté vepřové s česnekovou brokolicí.
 12;Sýrové těstoviny s vejcem;testoviny|syr|vejce;cheese_pasta.png;Rychlá comfort food - krémové těstoviny s rozpuštěným sýrem.
+13;Kuřecí paprikáš s kaší;kure|paprika|kase|smetana;chicken_paprikash.png;Maďarský klasik - kuřecí kousky v krémové paprikové omáčce s bramborovou kaší.
+14;Hovězí stroganoff;hovezi|testoviny|smetana|houby;beef_stroganoff.png;Ruská klasika - jemné hovězí nudličky v krémové houbové omáčce s těstovinami.
+15;Grilovaný losos s brokolicí;losos|brokolice|cesnek;salmon_broccoli.png;Lehké a zdravé - grilovaný losos s česnekovou restovanou brokolicí.
+16;Smažená rýže s vejcem;ryze|vejce|sojova;fried_rice.png;Asijská street food klasika - smažená rýže s míchanými vejci a sójovou omáčkou.
+17;Vepřové kotlety s kaší;veprove|kase|smetana;pork_chops_mash.png;Domácí pohoda - šťavnaté vepřové kotletky s krémovou bramborovou kaší.
+18;Tofu bowl s rýží a brokolicí;tofu|ryze|brokolice;tofu_rice_bowl.png;Zdravá Buddha miska - křupavé tofu s rýží a čerstvou brokolicí.
+19;Kuřecí Alfredo těstoviny;kure|testoviny|smetana;chicken_alfredo.png;Italská krémová dokonalost - těstoviny s kuřecím v omáčce Alfredo.
+20;Česnekové tofu s rýží;tofu|ryze|cesnek;garlic_tofu_rice.png;Asijská inspirace - křupavé česnekové tofu servírované na jasmínové rýži.
+21;Vepřový gyros s hranolky;veprove|hranolky|paprika;pork_gyros.png;Středomořská chuť - kořeněné vepřové gyros s hranolkami a tzatziki.
+22;Sýrová omeleta s paprikou;vejce|syr|paprika;cheese_omelette.png;Snídaňový klasik - nadýchaná omeleta se sýrem a barevnou paprikou.
+23;Losos s těstovinami;losos|testoviny|smetana;salmon_pasta.png;Italské mořské plody - losos v krémové koprovové omáčce s těstovinami.
+24;Hovězí s rýží;hovezi|ryze|sojova;beef_rice_bowl.png;Japonské gyudon - jemné hovězí plátky na rýži s glazurou ze sójové omáčky.
+25;Losos s hranolky;losos|hranolky|syr;fish_and_chips.png;Britská variace - pečený losos s křupavými hranolky a tatarskou omáčkou.
+26;Vepřové s rýží na asijský způsob;veprove|ryze|sojova;pork_rice.png;Asijská fúze - glazované vepřové na rýži s teriyaki omáčkou.
+27;Těstoviny s brokolicí a sýrem;testoviny|brokolice|syr;broccoli_pasta.png;Vegetariánský comfort food - těstoviny s brokolicí v sýrové omáčce.
+28;Kuřecí kari s rýží;kure|ryze|chilli|kokos;chicken_curry.png;Indická klasika - aromatické kuřecí kari s basmati rýží.
+29;Smažené tofu s paprikou;tofu|paprika|cesnek;tofu_pepper_stirfry.png;Asijská wok specialita - křupavé tofu s barevnou paprikou a česnekem.
+30;Losos ve smetanové omáčce s kaší;losos|kase|smetana;creamy_salmon_mash.png;Skandinávská elegance - losos v krémové omáčce s jemnou bramborovou kaší.
+31;Zeleninová smažená rýže;ryze|vejce|paprika;egg_fried_rice_veggies.png;Vegetariánská asijská klasika - smažená rýže s vejcem a barevnou paprikou.
+32;Hovězí s brokolicí a rýží;hovezi|brokolice|ryze|sojova;beef_broccoli_rice.png;Čínská klasika - hovězí s brokolicí v lesklé sójové glazuře na rýži.
+33;Svíčková na smetaně;hovezi|smetana|brambory;svickova.png;Česká klasika - svíčková pečeně v krémové zeleninové omáčce s houskovým knedlíkem.
+34;Hovězí guláš s knedlíkem;hovezi|paprika|brambory|cibule;gulas_knedlik.png;Tradiční český guláš s bohatou paprikovou omáčkou a houskovým knedlíkem.
+35;Vepřová pečeně s knedlíky;veprove|brambory|cesnek;veprova_pecene.png;Nedělní klasika - křupavá vepřová pečeně se zelím a knedlíky.
+36;Bramboráky;brambory|vejce|cesnek;bramborak.png;Křupavé české bramboráky s česnekem, podávané se zakysanou smetanou.
+37;Kulajda;brambory|houby|vejce|smetana;kulajda.png;Tradiční česká houbová polévka s brambory a zastřeným vejcem.
+38;Pizza Margherita;rajcata|mozzarella|cesnek;margherita.png;Autentická neapolská pizza s rajčatovou omáčkou, mozzarellou a bazalkou.
+39;Lasagne;hovezi|rajcata|syr|testoviny;lasagne.png;Italské lasagne s bohatým masovým ragú a bešamelovou omáčkou.
+40;Špagety Bolognese;hovezi|rajcata|testoviny;spaghetti_bolognese.png;Klasické italské špagety s boloňskou omáčkou a parmezánem.
+41;Salát Caprese;rajcata|mozzarella;caprese.png;Jednoduchý italský salát s čerstvými rajčaty, mozzarellou a bazalkou.
+42;Gnocchi se špenátem;brambory|spenat|smetana;gnocchi_spinach.png;Italské bramborové gnocchi v krémové špenátové omáčce.
+43;Špagety frutti di mare;testoviny|krevety|rajcata|cesnek;frutti_di_mare.png;Italské mořské těstoviny s krevetami v česnekové rajčatové omáčce.
+44;Houbové rizoto;ryze|houby|smetana;risotto_funghi.png;Krémové italské rizoto s lesními houbami a parmezánem.
+45;Penne Arrabiata;testoviny|rajcata|cesnek|chilli;penne_arrabiata.png;Pikantní italské těstoviny v pálivé rajčatové omáčce s česnekem.
+46;Ratatouille;cuketa|rajcata|paprika;ratatouille.png;Francouzská zeleninová pochoutka z Provence s cuketou a rajčaty.
+47;Quiche Lorraine;vejce|smetana|syr;quiche_lorraine.png;Francouzský slaný koláč s vajíčkovou náplní, slaninou a sýrem.
+48;Coq au vin;kure|houby|brambory;coq_au_vin.png;Francouzské kuře dušené v červeném víně s houbami a cibulkami.
+49;Kachna à l'orange;kachna|brambory;duck_orange.png;Elegantní francouzská kachna s pomerančovou glazurou a pečenými brambory.
+50;Francouzské palačinky;vejce|smetana;crepes.png;Jemné francouzské crêpes se šlehačkou a čerstvým ovocem.
+51;Musaka;jehneci|cuketa|rajcata|syr;moussaka.png;Řecká zapékaná pochoutka s jehněčím, lilkem a bešamelem.
+52;Souvlaki s tzatziki;kure|rajcata|cesnek;souvlaki.png;Řecké kuřecí špízy s tzatziki omáčkou a čerstvou zeleninou.
+53;Řecký salát;rajcata|feta|paprika;greek_salad.png;Tradiční řecký salát s feta sýrem, olivami a čerstvou zeleninou.
+54;Gyros talíř;veprove|rajcata|hranolky;gyros_plate.png;Řecký gyros talíř s hranolkami, tzatziki a čerstvou zeleninou.
+55;Jehněčí kleftiko;jehneci|brambory|cesnek;lamb_kleftiko.png;Řecké jehněčí pečené v pergamenu s brambory a bylinkami.
+56;Paella;ryze|krevety|kure|paprika;paella.png;Španělská paella s mořskými plody, kuřetem a šafránovou rýží.
+57;Španělská tortilla;vejce|brambory|cibule;tortilla_espanola.png;Klasická španělská omeleta s brambory a cibulí.
+58;Krevety na česneku;krevety|cesnek|chilli;gambas_ajillo.png;Španělské krevety na olivovém oleji s česnekem a chilli.
+59;Patatas bravas;brambory|rajcata|chilli;patatas_bravas.png;Španělské smažené brambory s pikantní rajčatovou omáčkou.
+60;Kuřecí tikka masala;kure|rajcata|smetana|chilli;tikka_masala.png;Indické kuřecí tikka masala v krémové kořeněné omáčce.
+61;Dal s rýží;cocka|ryze|rajcata;dal.png;Indická čočková pochoutka s aromatickým kořením a rýží.
+62;Palak paneer;spenat|syr|smetana;palak_paneer.png;Indický špenát s domácím sýrem paneer v krémové omáčce.
+63;Chana masala;cizrna|rajcata|chilli;chana_masala.png;Indické kořeněné cizrnové kari v rajčatové omáčce.
+64;Butter chicken;kure|smetana|rajcata;butter_chicken.png;Indické máslové kuře v jemné krémové omáčce s basmati rýží.
+65;Pad Thai;krevety|vejce|ryze;pad_thai.png;Thajské smažené rýžové nudle s krevetami, vejcem a arašídy.
+66;Zelené kari;kure|kokos|paprika|chilli;green_curry.png;Thajské zelené kari s kuřetem v kokosovém mléce s bazalkou.
+67;Tom Yum polévka;krevety|houby|chilli;tom_yum.png;Pikantní thajská polévka s krevetami, houbami a limetkou.
+68;Massaman kari;hovezi|brambory|kokos;massaman_curry.png;Thajské massaman kari s hovězím, brambory a arašídy.
+69;Kuře na thajské bazalce;kure|paprika|sojova|chilli;thai_basil_chicken.png;Thajské smažené kuře s bazalkou, chilli a jasmínovou rýží.
+70;Tacos;hovezi|rajcata|syr|chilli;tacos.png;Mexické hovězí tacos s čerstvou salsou, sýrem a koriandrem.
+71;Burrito;kure|ryze|fazole|syr;burrito.png;Mexické kuřecí burrito s rýží, fazolemi a guacamole.
+72;Quesadilla;kure|syr|paprika;quesadilla.png;Mexická quesadilla s kuřecím masem, sýrem a grilovanou paprikou.
+73;Enchiladas;kure|rajcata|syr|chilli;enchiladas.png;Mexické enchiladas s kuřecím v pikantní rajčatové omáčce.
+74;Huevos rancheros;vejce|rajcata|fazole|chilli;huevos_rancheros.png;Mexická snídaně - smažená vejce s fazolemi a pikantní salsou.
+75;Ramen;veprove|vejce|sojova;ramen.png;Japonský tonkotsu ramen s vepřovým, vajíčkem a nudlemi.
+76;Kuřecí katsu kari;kure|ryze|sojova;katsu_curry.png;Japonské smažené kuře katsu s hustým kari a rýží.
+77;Tuňákový poke bowl;tunak|ryze|sojova;tuna_poke.png;Havajsko-japonský poke bowl s čerstvým tuňákem a sushi rýží.
+78;Shakshuka;vejce|rajcata|paprika|cesnek|chilli;shakshuka.png;Blízkovýchodní vejce v pikantní rajčatové omáčce s paprikou.
+79;Falafel bowl;cizrna|rajcata|feta;falafel_bowl.png;Miska s křupavými falafely, hummusem a čerstvou zeleninou.
+80;Hovězí pho;hovezi|ryze|sojova;beef_pho.png;Vietnamská hovězí polévka pho s rýžovými nudlemi a bylinkami.
+81;Krevety na másle;krevety|cesnek|smetana;butter_shrimp.png;Krevety v česnekové máslové omáčce s čerstvými bylinkami.

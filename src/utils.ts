@@ -72,8 +72,17 @@ export function parseHlasky(csv: string): Hlaska[] {
  * Najde nejlepší shodu jídla podle vybraných tagů
  */
 export function findBestMatch(userTags: string[], jidla: Jidlo[]): MatchResult {
-  let bestMatch: MatchResult | null = null;
+  const allMatches = findAllBestMatches(userTags, jidla);
+  // Vrátíme náhodný z nejlepších
+  return allMatches[Math.floor(Math.random() * allMatches.length)];
+}
+
+/**
+ * Najde VŠECHNA jídla s nejlepším skóre
+ */
+export function findAllBestMatches(userTags: string[], jidla: Jidlo[]): MatchResult[] {
   let bestScore = -1;
+  const allResults: MatchResult[] = [];
   
   for (const jidlo of jidla) {
     // Počítáme průnik tagů
@@ -93,30 +102,36 @@ export function findBestMatch(userTags: string[], jidla: Jidlo[]): MatchResult {
     score -= missingTags.length * 0.1;
     score -= extraTags.length * 0.1;
     
+    const result: MatchResult = {
+      jidlo,
+      matchedTags,
+      missingTags,
+      extraTags,
+      score
+    };
+    
     if (score > bestScore) {
       bestScore = score;
-      bestMatch = {
-        jidlo,
-        matchedTags,
-        missingTags,
-        extraTags,
-        score
-      };
+      allResults.length = 0; // Vyčistíme předchozí
+      allResults.push(result);
+    } else if (score === bestScore) {
+      allResults.push(result);
     }
   }
   
   // Pokud se nic nenašlo (nemělo by nastat), vrátíme první jídlo
-  if (!bestMatch) {
-    return {
+  if (allResults.length === 0) {
+    return [{
       jidlo: jidla[0],
       matchedTags: [],
       missingTags: jidla[0].tagy,
       extraTags: userTags,
       score: 0
-    };
+    }];
   }
   
-  return bestMatch;
+  // Zamícháme výsledky pro náhodnost
+  return allResults.sort(() => Math.random() - 0.5);
 }
 
 /**
