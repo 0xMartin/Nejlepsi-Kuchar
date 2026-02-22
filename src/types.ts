@@ -31,6 +31,9 @@ export interface MatchResult {
 // Stav aplikace
 export type AppState = 'intro' | 'quiz' | 'result' | 'history' | 'picky';
 
+// Herní mód
+export type GameMode = 'experimental' | 'serious';
+
 // Záznam v historii
 export interface HistoryEntry {
   id: string;
@@ -42,4 +45,5 @@ export interface HistoryEntry {
   extraTags: string[];
   hlasky: { tag: string; hlaska: string }[]; // Hlášky pro každý extra tag
   hlaska?: string; // Fallback pro staré záznamy
+  gameMode?: GameMode; // Mód ve kterém bylo jídlo vytvořeno
 }

@@ -1,4 +1,4 @@
-import { Ingredience, Jidlo, Hlaska, MatchResult } from './types';
+import { Ingredience, Jidlo, Hlaska, MatchResult, GameMode } from './types';
 
 /**
  * Parsuje CSV řetězec na pole řádků
@@ -131,8 +131,8 @@ export function getRandomHlaska(hlasky: Hlaska[]): string {
 /**
  * Generuje cestu k obrázku jídla
  */
-export function getJidloImagePath(obrazek: string): string {
-  // Změníme příponu z .webp na .png
-  const pngName = obrazek.replace('.webp', '.png');
-  return `./data/jidlo-img/${pngName}`;
+export function getJidloImagePath(obrazek: string, gameMode: GameMode = 'experimental'): string {
+  // Pro experimental mód změníme příponu z .webp na .png
+  const imageName = gameMode === 'experimental' ? obrazek.replace('.webp', '.png') : obrazek;
+  return `./data/${gameMode}/jidlo-img/${imageName}`;
 }

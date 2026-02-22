@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { MatchResult } from '../types';
+import { MatchResult, GameMode } from '../types';
 import { getJidloImagePath } from '../utils';
 import { ChefConfession, PerfectMatch } from './ChefConfession';
 import { useMemo, useState } from 'react';
@@ -16,25 +16,38 @@ const PERFECT_MATCH_JOKES = [
   "Když je kuchař tak dobrý jako já, jídlo se skoro vaří samo. Skoro.",
 ];
 
+// Seriózní hlášky pro perfektní shodu
+const SERIOUS_PERFECT_MATCH = [
+  "Výborná volba! Toto jídlo perfektně odpovídá vašim preferencím.",
+  "Skvělé! Našli jsme recept, který přesně odpovídá vašemu výběru.",
+  "Perfektní shoda! Tento recept je pro vás jako stvořený.",
+  "Gratulujeme! Vaše ingredience se perfektně hodí k tomuto jídlu.",
+];
+
 interface ResultProps {
   result: MatchResult;
   userTags: string[];
   generatedHlasky: { tag: string; hlaska: string }[];
   onClose: () => void;
+  gameMode: GameMode;
 }
 
-export function Result({ result, userTags, generatedHlasky, onClose }: ResultProps) {
+export function Result({ result, userTags, generatedHlasky, onClose, gameMode }: ResultProps) {
   const { jidlo, matchedTags, missingTags, extraTags } = result;
   const isPerfectMatch = missingTags.length === 0 && extraTags.length === 0;
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const isSerious = gameMode === 'serious';
 
-  // Vtip pro perfektní shodu
+  // Vtip/text pro perfektní shodu
   const perfectJoke = useMemo(() => {
-    return PERFECT_MATCH_JOKES[Math.floor(Math.random() * PERFECT_MATCH_JOKES.length)];
-  }, []);
+    const jokes = isSerious ? SERIOUS_PERFECT_MATCH : PERFECT_MATCH_JOKES;
+    return jokes[Math.floor(Math.random() * jokes.length)];
+  }, [isSerious]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-4 relative">
+    <div className={`min-h-screen flex flex-col items-center justify-center px-4 py-4 relative ${
+      isSerious ? 'bg-gradient-to-br from-slate-50 to-blue-50' : ''
+    }`}>
       {/* Konfety animace pro úspěch - omezený počet a trvání */}
       {isPerfectMatch && (
         <motion.div
@@ -62,7 +75,10 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
                 repeatDelay: 1
               }}
             >
-              {['🎉', '✨', '🌟', '🎊', '💫', '🏆'][i % 6]}
+              {isSerious 
+                ? ['⭐', '✨', '✔️', '🍽️', '👨‍🍳', '🌟'][i % 6]
+                : ['🎉', '✨', '🌟', '🎊', '💫', '🏆'][i % 6]
+              }
             </motion.div>
           ))}
         </motion.div>
@@ -76,16 +92,28 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
         className="text-center mb-6"
       >
         <motion.h1 
-          className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-2"
+          className={`text-3xl md:text-4xl font-bold bg-clip-text text-transparent mb-2 ${
+            isSerious 
+              ? 'bg-gradient-to-r from-blue-600 to-cyan-500' 
+              : 'bg-gradient-to-r from-pink-500 to-purple-600'
+          }`}
           animate={isPerfectMatch ? { scale: [1, 1.05, 1] } : { scale: [1, 1.02, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          {isPerfectMatch ? '🎯 DOKONALÁ SHODA!' : '✨ Tvůj pokrm je připraven!'}
+          {isPerfectMatch 
+            ? (isSerious ? '✔️ Perfektní shoda!' : '🎯 DOKONALÁ SHODA!') 
+            : (isSerious ? '🍽️ Váš recept je připraven' : '✨ Tvůj pokrm je připraven!')
+          }
         </motion.h1>
         <p className="text-gray-600 text-lg">
           {isPerfectMatch 
-            ? 'Kuchař trefil všechny tvé preference na první pokus!' 
-            : 'Na základě tvých preferencí jsme našli toto úžasné jídlo'}
+            ? (isSerious 
+                ? 'Všechny vaše preferované ingredience jsou zahrnuty v tomto receptu.' 
+                : 'Kuchař trefil všechny tvé preference na první pokus!') 
+            : (isSerious 
+                ? 'Na základě vašich preferencí jsme vybrali tento recept.' 
+                : 'Na základě tvých preferencí jsme našli toto úžasné jídlo')
+          }
         </p>
       </motion.div>
 
@@ -99,7 +127,7 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
         {/* Obrázek jídla */}
         <div className="relative h-40 sm:h-48 md:h-64 overflow-hidden">
           <motion.img
-            src={getJidloImagePath(jidlo.obrazek)}
+            src={getJidloImagePath(jidlo.obrazek, gameMode)}
             alt={jidlo.nazev}
             className="w-full h-full object-cover cursor-pointer"
             initial={{ scale: 1.2 }}
@@ -151,7 +179,7 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
           {/* Shodné tagy */}
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">
-              ✅ Shodné ingredience
+              ✅ {isSerious ? 'Zahrnuté ingredience' : 'Shodné ingredience'}
             </h3>
             <div className="flex flex-wrap gap-2">
               {matchedTags.length > 0 ? matchedTags.map(tag => (
@@ -160,12 +188,16 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1 + matchedTags.indexOf(tag) * 0.1 }}
-                  className="px-3 py-1 bg-green-100 text-green-700 rounded-full font-medium text-sm"
+                  className={`px-3 py-1 rounded-full font-medium text-sm ${
+                    isSerious ? 'bg-emerald-100 text-emerald-700' : 'bg-green-100 text-green-700'
+                  }`}
                 >
                   #{tag}
                 </motion.span>
               )) : (
-                <span className="text-gray-400 italic text-sm">Žádné přímé shody</span>
+                <span className="text-gray-400 italic text-sm">
+                  {isSerious ? 'Žádné přímé shody' : 'Žádné přímé shody'}
+                </span>
               )}
             </div>
           </div>
@@ -174,7 +206,7 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
           {missingTags.length > 0 && (
             <div className="mb-4">
               <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">
-                🤷‍♂️ Navíc v jídle
+                {isSerious ? '📝 Další ingredience v receptu' : '🤷‍♂️ Navíc v jídle'}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {missingTags.map(tag => (
@@ -183,7 +215,9 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 1.2 + missingTags.indexOf(tag) * 0.1 }}
-                    className="px-3 py-1 bg-red-100 text-red-600 rounded-full font-medium text-sm"
+                    className={`px-3 py-1 rounded-full font-medium text-sm ${
+                      isSerious ? 'bg-slate-100 text-slate-600' : 'bg-red-100 text-red-600'
+                    }`}
                   >
                     #{tag}
                   </motion.span>
@@ -195,27 +229,29 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
           {/* Statistiky */}
           <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🎯</span>
+              <span className="text-2xl">{isSerious ? '✅' : '🎯'}</span>
               <div>
-                <p className="text-sm text-gray-500">Shoda</p>
-                <p className="font-bold text-lg text-pink-600">
+                <p className="text-sm text-gray-500">{isSerious ? 'Přesnost' : 'Shoda'}</p>
+                <p className={`font-bold text-lg ${isSerious ? 'text-blue-600' : 'text-pink-600'}`}>
                   {jidlo.tagy.length > 0 ? Math.round((matchedTags.length / jidlo.tagy.length) * 100) : 0}%
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🏷️</span>
+              <span className="text-2xl">{isSerious ? '🧂' : '🏷️'}</span>
               <div>
-                <p className="text-sm text-gray-500">Tvé tagy</p>
-                <p className="font-bold text-lg text-purple-600">{userTags.length}</p>
+                <p className="text-sm text-gray-500">{isSerious ? 'Vybrané' : 'Tvé tagy'}</p>
+                <p className={`font-bold text-lg ${isSerious ? 'text-cyan-600' : 'text-purple-600'}`}>{userTags.length}</p>
               </div>
             </div>
             {isPerfectMatch && (
               <div className="flex items-center gap-2 ml-auto">
-                <span className="text-2xl">🏆</span>
+                <span className="text-2xl">{isSerious ? '⭐' : '🏆'}</span>
                 <div>
                   <p className="text-sm text-gray-500">Status</p>
-                  <p className="font-bold text-lg text-green-600">Perfektní!</p>
+                  <p className={`font-bold text-lg ${isSerious ? 'text-emerald-600' : 'text-green-600'}`}>
+                    {isSerious ? 'Výborné!' : 'Perfektní!'}
+                  </p>
                 </div>
               </div>
             )}
@@ -225,12 +261,13 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
 
       {/* Kuchařovo doznání nebo oslava perfektní shody */}
       {isPerfectMatch && userTags.length >= 3 ? (
-        <PerfectMatch joke={perfectJoke} />
+        <PerfectMatch joke={perfectJoke} gameMode={gameMode} />
       ) : (
         <ChefConfession
           extraTags={extraTags}
           hlapisky={generatedHlasky}
           userTagsCount={userTags.length}
+          gameMode={gameMode}
         />
       )}
 
@@ -242,9 +279,13 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={onClose}
-        className="mt-4 sm:mt-8 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-lg sm:text-xl font-bold rounded-full shadow-lg hover:shadow-xl transition-shadow"
+        className={`mt-4 sm:mt-8 px-6 py-3 sm:px-8 sm:py-4 text-white text-lg sm:text-xl font-bold rounded-full shadow-lg hover:shadow-xl transition-shadow ${
+          isSerious 
+            ? 'bg-gradient-to-r from-blue-500 to-cyan-500' 
+            : 'bg-gradient-to-r from-pink-500 to-purple-600'
+        }`}
       >
-        ✓ Super, díky!
+        {isSerious ? '✓ Hotovo' : '✓ Super, díky!'}
       </motion.button>
       
       <motion.p
@@ -253,7 +294,7 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
         transition={{ delay: 1.4 }}
         className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500"
       >
-        Klikni pro návrat na hlavní stránku
+        {isSerious ? 'Zpět na výběr ingrediencí' : 'Klikni pro návrat na hlavní stránku'}
       </motion.p>
 
       {/* Fullscreen overlay */}
@@ -270,7 +311,7 @@ export function Result({ result, userTags, generatedHlasky, onClose }: ResultPro
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              src={getJidloImagePath(jidlo.obrazek)}
+              src={getJidloImagePath(jidlo.obrazek, gameMode)}
               alt={jidlo.nazev}
               className="max-w-full max-h-full object-contain rounded-lg"
               onError={(e) => {

@@ -8,12 +8,17 @@ import {
   findBestMatch,
   getRandomHlaska
 } from './utils';
-import { AppState, Ingredience, Jidlo, Hlaska, MatchResult, HistoryEntry } from './types';
+import { AppState, Ingredience, Jidlo, Hlaska, MatchResult, HistoryEntry, GameMode } from './types';
 
 const HISTORY_KEY = 'nejlepsi-kuchar-history';
+const MODE_KEY = 'nejlepsi-kuchar-mode';
 
 function App() {
   const [appState, setAppState] = useState<AppState>('intro');
+  const [gameMode, setGameMode] = useState<GameMode>(() => {
+    const saved = localStorage.getItem(MODE_KEY);
+    return (saved as GameMode) || 'experimental';
+  });
   const [ingredience, setIngredience] = useState<Ingredience[]>([]);
   const [jidla, setJidla] = useState<Jidlo[]>([]);
   const [hlasky, setHlasky] = useState<Hlaska[]>([]);
@@ -37,15 +42,17 @@ function App() {
     }
   }, []);
 
-  // Načtení CSV dat při startu
+  // Načtení CSV dat při startu nebo změně módu
   useEffect(() => {
     async function loadData() {
+      setIsLoading(true);
       try {
+        const dataPath = `./data/${gameMode}`;
         const [ingredienceRes, jidlaRes, hlaskyRes, pickyRes] = await Promise.all([
-          fetch('./data/ingredience.csv'),
-          fetch('./data/jidlo.csv'),
-          fetch('./data/hlasky-vymluvy.csv'),
-          fetch('./data/hlasky-vybirave.csv')
+          fetch(`${dataPath}/ingredience.csv`),
+          fetch(`${dataPath}/jidlo.csv`),
+          fetch(`${dataPath}/hlasky-vymluvy.csv`),
+          fetch(`${dataPath}/hlasky-vybirave.csv`)
         ]);
 
         if (!ingredienceRes.ok || !jidlaRes.ok || !hlaskyRes.ok || !pickyRes.ok) {
@@ -72,7 +79,13 @@ function App() {
     }
 
     loadData();
-  }, []);
+  }, [gameMode]);
+
+  // Změna herního módu
+  const handleModeChange = (mode: GameMode) => {
+    setGameMode(mode);
+    localStorage.setItem(MODE_KEY, mode);
+  };
 
   // Uložení do historie
   const saveToHistory = (matchResult: MatchResult, tags: string[], hlaskyProIngredienc: { tag: string; hlaska: string }[]) => {
@@ -85,7 +98,8 @@ function App() {
       missingTags: matchResult.missingTags,
       extraTags: matchResult.extraTags,
       hlasky: hlaskyProIngredienc,
-      hlaska: hlaskyProIngredienc[0]?.hlaska || '' // Fallback pro zpětnou kompatibilitu
+      hlaska: hlaskyProIngredienc[0]?.hlaska || '', // Fallback pro zpětnou kompatibilitu
+      gameMode: gameMode
     };
 
     const newHistory = [entry, ...history].slice(0, 50); // Max 50 záznamů
@@ -203,7 +217,12 @@ function App() {
           exit={{ opacity: 0, x: -100 }}
           transition={{ duration: 0.4 }}
         >
-          <Intro onStart={handleStart} onHistory={handleHistory} />
+        <Intro 
+            onStart={handleStart} 
+            onHistory={handleHistory} 
+            gameMode={gameMode}
+            onModeChange={handleModeChange}
+          />
         </motion.div>
       )}
 
@@ -215,10 +234,11 @@ function App() {
           exit={{ opacity: 0, x: -100 }}
           transition={{ duration: 0.4 }}
         >
-          <Quiz 
+        <Quiz 
             ingredience={ingredience} 
             onComplete={handleQuizComplete}
             onPickyEater={handlePickyEater}
+            gameMode={gameMode}
           />
         </motion.div>
       )}
@@ -248,6 +268,7 @@ function App() {
             userTags={selectedTags}
             generatedHlasky={generatedHlasky}
             onClose={handleClose}
+            gameMode={gameMode}
           />
         </motion.div>
       )}
