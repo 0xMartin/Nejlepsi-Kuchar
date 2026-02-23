@@ -1,0 +1,27 @@
+{
+  "name": "Nejlepší Kuchař",
+  "short_name": "Kuchař",
+  "description": "Osobní kulinářský génius, který vám doporučí jídla na základě vašich preferencí",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fef3c7",
+  "theme_color": "#ec4899",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./kuchar.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./kuchar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "entertainment", "games"],
+  "lang": "cs",
+  "dir": "ltr"
+}

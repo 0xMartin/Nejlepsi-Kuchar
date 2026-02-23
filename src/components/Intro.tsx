@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { GameMode } from '../types';
 import { useState, useEffect } from 'react';
+import { useSoundContext } from '../hooks/useSound';
 
 interface IntroProps {
   onStart: () => void;
@@ -14,6 +15,7 @@ export function Intro({ onStart, onHistory, gameMode, onModeChange }: IntroProps
   const [showHurtDialog, setShowHurtDialog] = useState(false);
   const [hurtMessage, setHurtMessage] = useState('');
   const [hurtMessages, setHurtMessages] = useState<string[]>([]);
+  const { soundEnabled, toggleSound, playSound } = useSoundContext();
   
   // Načtení ublížených hlášek při mountu
   useEffect(() => {
@@ -45,12 +47,12 @@ export function Intro({ onStart, onHistory, gameMode, onModeChange }: IntroProps
   };
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center px-3 sm:px-4 relative overflow-hidden transition-colors duration-500 ${isSerious ? 'bg-gradient-to-br from-slate-50 to-blue-50' : ''}`}>
-      {/* Přepínač módu */}
+      {/* Přepínač módu a zvuku */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="absolute top-4 right-4 z-20"
+        className="absolute top-4 right-4 z-20 flex flex-col gap-2"
       >
         <div className={`flex items-center gap-2 px-3 py-2 rounded-full shadow-md backdrop-blur-sm ${isSerious ? 'bg-white/90' : 'bg-white/70'}`}>
           <span className={`text-xs sm:text-sm font-medium ${!isSerious ? 'text-pink-600' : 'text-gray-400'}`}>
@@ -70,6 +72,21 @@ export function Intro({ onStart, onHistory, gameMode, onModeChange }: IntroProps
             Seriózní vaření
           </span>
         </div>
+        
+        {/* Tlačítko pro zvuk */}
+        <motion.button
+          onClick={() => {
+            toggleSound();
+            if (!soundEnabled) playSound('pop');
+          }}
+          className={`self-end px-3 py-2 rounded-full shadow-md backdrop-blur-sm transition-colors ${
+            isSerious ? 'bg-white/90 hover:bg-white' : 'bg-white/70 hover:bg-white/90'
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="text-lg">{soundEnabled ? '🔊' : '🔇'}</span>
+        </motion.button>
       </motion.div>
 
       {/* Animované pozadí */}

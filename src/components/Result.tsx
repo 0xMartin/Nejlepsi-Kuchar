@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MatchResult, GameMode } from '../types';
 import { getJidloImagePath } from '../utils';
 import { ChefConfession, PerfectMatch } from './ChefConfession';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useSoundContext } from '../hooks/useSound';
 
 // Vtipné hlášky pro perfektní shodu
 const PERFECT_MATCH_JOKES = [
@@ -40,6 +41,16 @@ export function Result({ result, userTags, generatedHlasky, onClose, gameMode, t
   const isPerfectMatch = missingTags.length === 0 && extraTags.length === 0;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const isSerious = gameMode === 'serious';
+  const { playSound } = useSoundContext();
+
+  // Přehrát zvuk při zobrazení výsledku
+  useEffect(() => {
+    if (isPerfectMatch) {
+      playSound('fanfare');
+    } else {
+      playSound('success');
+    }
+  }, [isPerfectMatch, playSound]);
 
   // Vtip/text pro perfektní shodu
   const perfectJoke = useMemo(() => {

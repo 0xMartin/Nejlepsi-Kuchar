@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Ingredience, GameMode } from '../types';
 import { IngredientCard } from './IngredientCard';
+import { useSoundContext } from '../hooks/useSound';
 
 // Mapování tagů na emoji pro seriózní mód
 const SERIOUS_EMOJI_MAP: Record<string, string> = {
@@ -58,6 +59,7 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
   const [questionKey, setQuestionKey] = useState(0);
   // Pro serious mód - vícenásobný výběr
   const [seriousSelection, setSeriousSelection] = useState<Set<number>>(new Set());
+  const { playSound } = useSoundContext();
 
   const isSerious = gameMode === 'serious';
   const MAX_TAGS = 3;
@@ -86,10 +88,12 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
     const newSelection = new Set(seriousSelection);
     if (newSelection.has(ing.id)) {
       newSelection.delete(ing.id);
+      playSound('pop');
     } else {
       // Zkontroluj, jestli můžeme přidat další
       if (selectedTags.length + newSelection.size < MAX_TAGS) {
         newSelection.add(ing.id);
+        playSound('select');
       }
     }
     setSeriousSelection(newSelection);
@@ -98,6 +102,8 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
   // Pro serious mód - potvrzení výběru a přechod na další
   const handleSeriousContinue = () => {
     if (!currentIngredients) return;
+    
+    playSound('success');
     
     // Přidáme vybrané tagy
     const newSelectedTags = currentIngredients
@@ -150,6 +156,13 @@ export function Quiz({ ingredience, onComplete, onPickyEater, gameMode }: QuizPr
   // Pro experimental mód - výběr jedné ingredience
   const handleSelect = (option: 'a' | 'b' | 'none') => {
     setSelectedOption(option);
+    
+    // Přehrát zvuk
+    if (option === 'none') {
+      playSound('whoosh');
+    } else {
+      playSound('select');
+    }
     
     setTimeout(() => {
       let newTags = selectedTags;
